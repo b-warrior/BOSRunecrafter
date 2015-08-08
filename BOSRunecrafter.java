@@ -17,7 +17,7 @@ import org.powerbot.script.Script;
 import tasks.*;
 
 
-@Script.Manifest(name="BOS Runecrafter", description="Used for runecrafting", properties = "client=4;")
+@Script.Manifest(name="BOS Runecrafter", description="Only supports air rune crafting for the moment", properties = "client=4;")
 public class BOSRunecrafter extends PollingScript<ClientContext> implements PaintListener{
 	
 	
