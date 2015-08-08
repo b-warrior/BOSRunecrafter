@@ -32,7 +32,7 @@ public class BOSRunecrafter extends PollingScript<ClientContext> implements Pain
     public void start() {
 		taskList.addAll(Arrays.asList(new WalkToBank(ctx), new Banking(ctx), new WalkToAltar(ctx)
 									 ,new EnterAltar(ctx),new CraftRunes(ctx), new LeaveAltar(ctx)
-									 ));
+									 ,new CheckForRun(ctx)));
     }
 
 	@Override
