@@ -38,8 +38,8 @@ public class BOSRunecrafter extends PollingScript<ClientContext> implements Pain
 		taskList.addAll(Arrays.asList(new WalkToBank(ctx,ItemConstants.ESSENCE_NORMAL,PathConstants.AIRRUNEPATH, NPCConstants.BANKERIDS)
 									, new Banking(ctx, ItemConstants.ESSENCE_NORMAL, NPCConstants.BANKERIDS)
 									, new WalkToAltar(ctx, ItemConstants.ESSENCE_NORMAL,PathConstants.AIRRUNEPATH, ObjectContants.ALTER_AIR)
-									, new EnterAltar(ctx, ItemConstants.ESSENCE_NORMAL, ObjectContants.PORTAL_AIR)
-									, new CraftRunes(ctx, ItemConstants.ESSENCE_NORMAL, ObjectContants.PORTAL_AIR)
+									, new EnterAltar(ctx, ItemConstants.ESSENCE_NORMAL, ObjectContants.ALTER_AIR_ENTRANCE)
+									, new CraftRunes(ctx, ItemConstants.ESSENCE_NORMAL, ObjectContants.ALTER_AIR)
 									, new LeaveAltar(ctx, ItemConstants.ESSENCE_NORMAL, ObjectContants.PORTAL_AIR)
 									, new CheckForRun(ctx)));
 	/*	taskList.addAll(Arrays.asList(new WalkToBank(ctx,ItemConstants.ESSENCE_PURE,PathConstants.SHOPTONATURE, AreaConstants.SHOP_NATURE)
