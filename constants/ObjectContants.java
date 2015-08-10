@@ -13,6 +13,8 @@ public class ObjectContants {
 	public static int ALTER_NATURE = 14905;
 	public static int PORTAL_NATURE = 14892;
 	
+	public static int BANK_BOOTH = 24101;
+	
 	
 	
 }

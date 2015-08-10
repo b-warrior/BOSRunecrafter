@@ -4,9 +4,9 @@ import java.util.concurrent.Callable;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.rt4.ClientContext;
-import org.powerbot.script.rt4.Npc;
+import org.powerbot.script.rt4.GameObject;
 
-import constants.NPCConstants;
+import constants.ObjectContants;
 
 public class BankMethods extends Methods{
 
@@ -16,16 +16,16 @@ public class BankMethods extends Methods{
 
 	public void openBank(){
 		
-		Npc banker = clientContext.npcs.select().id(NPCConstants.BANKERIDS).nearest().poll();
+		GameObject bankBooth = clientContext.objects.select().id(ObjectContants.BANK_BOOTH).nearest().poll();
 		
 	    Condition.wait(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                return banker.inViewport() && !clientContext.players.local().inMotion();
+                return bankBooth.inViewport() && !clientContext.players.local().inMotion();
             }
         }, 200, 10);
 	    
-	    banker.interact("Bank");
+	    bankBooth.interact("Bank");
 	    
         Condition.wait(new Callable<Boolean>() {
             @Override
