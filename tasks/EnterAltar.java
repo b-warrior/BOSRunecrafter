@@ -6,24 +6,27 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.GameObject;
 
-import constants.AreaConstants;
-import constants.ObjectContants;
-
 public class EnterAltar extends Task<ClientContext> {
 
-	public EnterAltar(ClientContext clientContext) {
+	private int essence;
+	private int alterEnterance;
+	
+	public EnterAltar(ClientContext clientContext, int essence, int alterEnterance) {
 		super(clientContext);
-		state = "Enter altar";
+		this.state = "Enter altar";
+		this.essence = essence;
+		this.alterEnterance = alterEnterance;
 	}
 
 	@Override
 	public boolean activate() {
-		return methods.inventoryMethods().inventoryContainsEssence() && AreaConstants.ALTAR_AIR_OUTSIDE.contains(ctx.players.local());
+		return methods.inventoryMethods().iventoryContainsItem(this.essence) 
+				&& methods.objectMethods().objectIsOnScreen(alterEnterance);
 	}
 
 	@Override
 	public void execute() {
-		GameObject altar = ctx.objects.select().id(ObjectContants.ALTER_AIR_ENTRANCE).poll();
+		GameObject altar = ctx.objects.select().id(this.alterEnterance).poll();
 		
 		altar.interact("Enter");
 		
@@ -32,7 +35,7 @@ public class EnterAltar extends Task<ClientContext> {
             public Boolean call() throws Exception {
                 return ctx.players.local().animation() == 1;
             }
-        }, 300, 10);
+        }, 100, 10);
 	}
 
 }

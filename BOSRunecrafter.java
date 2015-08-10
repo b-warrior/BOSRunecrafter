@@ -14,6 +14,10 @@ import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Constants;
 import org.powerbot.script.Script;
 
+import constants.ItemConstants;
+import constants.NPCConstants;
+import constants.ObjectContants;
+import constants.PathConstants;
 import tasks.*;
 
 
@@ -30,10 +34,22 @@ public class BOSRunecrafter extends PollingScript<ClientContext> implements Pain
 	 
 	@Override
     public void start() {
-		taskList.addAll(Arrays.asList(new WalkToBank(ctx), new Banking(ctx), new WalkToAltar(ctx)
-									 ,new EnterAltar(ctx),new CraftRunes(ctx), new LeaveAltar(ctx)
-									 ,new CheckForRun(ctx)));
-    }
+	//airRunes
+		taskList.addAll(Arrays.asList(new WalkToBank(ctx,ItemConstants.ESSENCE_NORMAL,PathConstants.AIRRUNEPATH, NPCConstants.BANKERIDS)
+									, new Banking(ctx, ItemConstants.ESSENCE_NORMAL, NPCConstants.BANKERIDS)
+									, new WalkToAltar(ctx, ItemConstants.ESSENCE_NORMAL,PathConstants.AIRRUNEPATH, ObjectContants.ALTER_AIR)
+									, new EnterAltar(ctx, ItemConstants.ESSENCE_NORMAL, ObjectContants.PORTAL_AIR)
+									, new CraftRunes(ctx, ItemConstants.ESSENCE_NORMAL, ObjectContants.PORTAL_AIR)
+									, new LeaveAltar(ctx, ItemConstants.ESSENCE_NORMAL, ObjectContants.PORTAL_AIR)
+									, new CheckForRun(ctx)));
+	/*	taskList.addAll(Arrays.asList(new WalkToBank(ctx,ItemConstants.ESSENCE_PURE,PathConstants.SHOPTONATURE, AreaConstants.SHOP_NATURE)
+		, new TradeShop(ctx, ItemConstants.ESSENCE_PURE, NPCConstants.SHOPNATURRUNE)
+		, new WalkToAltar(ctx, ItemConstants.ESSENCE_PURE,PathConstants.SHOPTONATURE, AreaConstants.ALTAR_NATURE_OUTSIDE)
+		, new EnterAltar(ctx, ItemConstants.ESSENCE_PURE, ObjectContants.ALTER_NATURE_ENTRANCE, AreaConstants.ALTAR_NATURE_OUTSIDE)
+		, new CraftRunes(ctx, ItemConstants.ESSENCE_PURE, ObjectContants.ALTER_NATURE, AreaConstants.ALTAR_NATURE_INSIDE)
+		, new LeaveAltar(ctx, ItemConstants.ESSENCE_PURE, ObjectContants.PORTAL_NATURE, AreaConstants.ALTAR_NATURE_INSIDE)
+		, new CheckForRun(ctx)));*/
+    }    
 
 	@Override
 	public void poll() {

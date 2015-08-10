@@ -1,26 +1,33 @@
 package tasks;
 
+import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.ClientContext;
 
-import constants.AreaConstants;
-import constants.PathConstants;
 
 public class WalkToBank extends Task<ClientContext> {
 	
-	public WalkToBank(ClientContext clientContext) {
+	private int essence;
+	private Tile[] path; 
+	private int[] bankers;
+	
+	public WalkToBank(ClientContext clientContext,int essence,Tile[] path,int[] bankers) {
 		super(clientContext);
 		state = "Walking to bank";
+		this.essence = essence;
+		this.path = path;
+		this.bankers = bankers;
 	}
 
 	@Override
 	public boolean activate() {
-		return !methods.inventoryMethods().inventoryContainsEssence() 
-				&& !AreaConstants.BANKING_FALADOR.contains(ctx.players.local()) && ctx.players.local().animation() == -1;
+		return !methods.inventoryMethods().iventoryContainsItem(this.essence) 
+				&& !methods.npcMethods().npcIsClose(bankers)
+				&& ctx.players.local().animation() == -1;
 	}
 
 	@Override
 	public void execute() {
-		ctx.movement.newTilePath(PathConstants.AIRRUNEPATH).reverse().traverse();
+		ctx.movement.newTilePath(this.path).reverse().traverse();
 	}
 
 }
