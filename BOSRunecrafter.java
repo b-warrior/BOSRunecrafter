@@ -1,12 +1,17 @@
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.PollingScript;
@@ -14,14 +19,11 @@ import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Constants;
 import org.powerbot.script.Script;
 
-import constants.ItemConstants;
-import constants.NPCConstants;
-import constants.ObjectContants;
-import constants.PathConstants;
+import Frame.StartupFrame;
 import tasks.*;
 
 
-@Script.Manifest(name="BOS Runecrafter", description="Only supports air rune crafting for the moment", properties = "client=4;")
+@Script.Manifest(name="BOS Runecrafter", description="Supports air and fire altar. Only tiara support atm.", properties = "client=4;topic=1278331;")
 public class BOSRunecrafter extends PollingScript<ClientContext> implements PaintListener{
 	
 	
@@ -29,31 +31,28 @@ public class BOSRunecrafter extends PollingScript<ClientContext> implements Pain
 	 private final int startXP = ctx.skills.experience(Constants.SKILLS_RUNECRAFTING);
 	 private String currentStatus = "Starting up";
 	
-	@SuppressWarnings("rawtypes")
-	private List<Task> taskList = new ArrayList<Task>();
+
+	private List<Task<?>> taskList = new ArrayList<Task<?>>();
 	 
 	@Override
     public void start() {
-	//airRunes
-		taskList.addAll(Arrays.asList(new WalkToBank(ctx,ItemConstants.ESSENCE_NORMAL,PathConstants.AIRRUNEPATH, NPCConstants.BANKERIDS)
-									, new Banking(ctx, ItemConstants.ESSENCE_NORMAL, ObjectContants.BANK_BOOTH)
-									, new WalkToAltar(ctx, ItemConstants.ESSENCE_NORMAL,PathConstants.AIRRUNEPATH, ObjectContants.ALTER_AIR)
-									, new EnterAltar(ctx, ItemConstants.ESSENCE_NORMAL, ObjectContants.ALTER_AIR_ENTRANCE)
-									, new CraftRunes(ctx, ItemConstants.ESSENCE_NORMAL, ObjectContants.ALTER_AIR)
-									, new LeaveAltar(ctx, ItemConstants.ESSENCE_NORMAL, ObjectContants.PORTAL_AIR)
-									, new CheckForRun(ctx)));
-	/*	taskList.addAll(Arrays.asList(new WalkToBank(ctx,ItemConstants.ESSENCE_PURE,PathConstants.SHOPTONATURE, AreaConstants.SHOP_NATURE)
-		, new TradeShop(ctx, ItemConstants.ESSENCE_PURE, NPCConstants.SHOPNATURRUNE)
-		, new WalkToAltar(ctx, ItemConstants.ESSENCE_PURE,PathConstants.SHOPTONATURE, AreaConstants.ALTAR_NATURE_OUTSIDE)
-		, new EnterAltar(ctx, ItemConstants.ESSENCE_PURE, ObjectContants.ALTER_NATURE_ENTRANCE, AreaConstants.ALTAR_NATURE_OUTSIDE)
-		, new CraftRunes(ctx, ItemConstants.ESSENCE_PURE, ObjectContants.ALTER_NATURE, AreaConstants.ALTAR_NATURE_INSIDE)
-		, new LeaveAltar(ctx, ItemConstants.ESSENCE_PURE, ObjectContants.PORTAL_NATURE, AreaConstants.ALTAR_NATURE_INSIDE)
-		, new CheckForRun(ctx)));*/
+
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					StartupFrame frame = new StartupFrame(ctx,taskList);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
     }    
 
 	@Override
-	public void poll() {
-        for (@SuppressWarnings("rawtypes") Task task : taskList) {
+	public void poll() { 
+        for (Task<?> task : taskList) {
             if (task.activate()) {
             	currentStatus = task.getState();
                 task.execute();
@@ -63,6 +62,9 @@ public class BOSRunecrafter extends PollingScript<ClientContext> implements Pain
 
 	@Override
 	public void repaint(Graphics graphics) {
+		
+		Image background= getImage("http://i.imgur.com/t3gqM6R.png");
+		graphics.drawImage(background, 2, 335, null);
 		
 		long currentTime = System.currentTimeMillis() - initTime;
 		long currentTimeSec = (int)(currentTime / 1000);
@@ -82,23 +84,30 @@ public class BOSRunecrafter extends PollingScript<ClientContext> implements Pain
         	perHourXp = (int)( (gainedXP * 3600) /(currentTimeSec));
 
         Graphics2D graphics2D = (Graphics2D) graphics;
-        graphics2D.setColor(new Color(79, 215, 197, 150));
-        graphics2D.fillRect(10, 200, 140, 135);
-        graphics2D.setColor(Color.WHITE);
-        graphics2D.setFont(new Font("Arial", 0, 12));
+      //  graphics2D.setColor(new Color(79, 215, 197, 150));
+      //  graphics2D.fillRect(10, 200, 140, 135);
+        graphics2D.setColor(new Color(68, 70, 67));
+        graphics2D.setFont(new Font("Razer Header Regular Oblique", 0, 12));
 
-        graphics2D.drawString("BOS Runecrafter", 15, 215);
-        graphics2D.drawString("Run time: " + theTime, 15, 245);
-        graphics2D.drawString("Current Lvl: " + currentLvl, 15, 265);
-        graphics2D.drawString("Xp gained: " + gainedXP, 15, 285);
-        graphics2D.drawString("Xp per hour: " + perHourXp, 15, 305);
-        graphics2D.drawString("Status: " + currentStatus, 15, 325);
+        graphics2D.drawString("v1.04", 425, 368);
+        graphics2D.drawString("" + theTime, 345, 429);
+        graphics2D.drawString("" + currentLvl, 345, 402);
+        graphics2D.drawString("" + gainedXP, 198, 426);
+        graphics2D.drawString("" + perHourXp, 198, 402);
+        graphics2D.drawString("" + currentStatus, 198, 455);
 
         graphics2D.setColor(Color.ORANGE);
         final Point p = ctx.input.getLocation();
         graphics2D.drawLine(p.x - 5, p.y - 5, p.x + 5, p.y + 5);
         graphics2D.drawLine(p.x - 5, p.y + 5, p.x + 5, p.y - 5);
         
+        
+        
 	}
+	
+	private Image getImage(String url) {
+        try { return ImageIO.read(new URL(url)); } 
+        catch(IOException e) { return null; }
+      }
 
 }

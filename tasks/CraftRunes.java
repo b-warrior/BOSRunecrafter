@@ -21,7 +21,8 @@ public class CraftRunes extends Task<ClientContext>{
 	@Override
 	public boolean activate() {
 		return methods.inventoryMethods().iventoryContainsItem(this.essence) 
-				&& methods.objectMethods().objectIsClose(altar);
+				&& methods.objectMethods().objectIsClose(altar)
+				&& ctx.players.local().animation() == -1;
 	}
 
 	@Override

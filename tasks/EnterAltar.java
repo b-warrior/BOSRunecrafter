@@ -21,11 +21,17 @@ public class EnterAltar extends Task<ClientContext> {
 	@Override
 	public boolean activate() {
 		return methods.inventoryMethods().iventoryContainsItem(this.essence) 
-				&& methods.objectMethods().objectIsOnScreen(alterEnterance);
+				&& methods.objectMethods().objectIsClose(alterEnterance);
 	}
 
 	@Override
 	public void execute() {
+		
+		if(!methods.objectMethods().objectIsOnScreen(alterEnterance)){
+			methods.objectMethods().walkToObject(alterEnterance);
+			return;
+		}
+		
 		GameObject altar = ctx.objects.select().id(this.alterEnterance).poll();
 		
 		altar.interact("Enter");

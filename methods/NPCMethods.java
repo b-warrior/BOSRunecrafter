@@ -14,7 +14,7 @@ public class NPCMethods extends Methods{
 	
 	
 	public void tradeWithNPC(int id){
-		Npc npc = clientContext.npcs.select().id(id).nearest().poll();
+		final Npc npc = clientContext.npcs.select().id(id).nearest().poll();
 		npc.interact("Trade");
 		
 	    Condition.wait(new Callable<Boolean>() {

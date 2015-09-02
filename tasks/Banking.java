@@ -8,12 +8,20 @@ public class Banking extends Task<ClientContext> {
 	
 	private int essence;
 	private int bankBooth;
+	private String action;
 	
-	public Banking(ClientContext clientContext,int essence, int bankBooth) {
+
+	
+	public Banking(ClientContext clientContext,int essence, int bankBooth,String action) {
 		super(clientContext);
 		this.state = "Banking";
 		this.essence = essence;
 		this.bankBooth = bankBooth;
+		this.action = action;
+	}
+	
+	public Banking(ClientContext clientContext,int essence, int bankBooth) {
+		this(clientContext,essence,bankBooth,"Bank");
 	}
 
 	@Override
@@ -30,7 +38,7 @@ public class Banking extends Task<ClientContext> {
 			return;
 		}
 		
-		methods.bankMethods().openBank();
+		methods.bankMethods().openBank(this.bankBooth,this.action);
         
         if(ctx.inventory.items().length > 0){
         	ctx.bank.depositInventory();

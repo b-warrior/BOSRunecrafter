@@ -13,4 +13,15 @@ public class ItemConstants {
 	
 	public static int TALISMAN_AIR = 1438;
 	
+	public static int DUEL_RING_8 = 2552;
+	public static int DUEL_RING_7 = 2554;
+	public static int DUEL_RING_6 = 2556;
+	public static int DUEL_RING_5 = 2558;
+	public static int DUEL_RING_4 = 2560;
+	public static int DUEL_RING_3 = 2562;
+	public static int DUEL_RING_2 = 2564;
+	public static int DUEL_RING_1 = 2566;
+	
+	public static int[] DUEL_RING_ARENA = {DUEL_RING_8,DUEL_RING_6,DUEL_RING_4,DUEL_RING_2};
+	public static int[] DUEL_RING_CASTLE = {DUEL_RING_7,DUEL_RING_5,DUEL_RING_3,DUEL_RING_1};
 }

@@ -6,7 +6,6 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.GameObject;
 
-import constants.ObjectContants;
 
 public class BankMethods extends Methods{
 
@@ -14,9 +13,9 @@ public class BankMethods extends Methods{
 		super(clientContext);
 	}
 
-	public void openBank(){
+	public void openBank(int bankBoothID, String action){
 		
-		GameObject bankBooth = clientContext.objects.select().id(ObjectContants.BANK_BOOTH).nearest().poll();
+		final GameObject bankBooth = clientContext.objects.select().id(bankBoothID).nearest().poll();
 		
 	    Condition.wait(new Callable<Boolean>() {
             @Override
@@ -25,7 +24,7 @@ public class BankMethods extends Methods{
             }
         }, 200, 10);
 	    
-	    bankBooth.interact("Bank");
+	    bankBooth.interact(action);
 	    
         Condition.wait(new Callable<Boolean>() {
             @Override
